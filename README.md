@@ -1,25 +1,27 @@
-# TXR-26: Automatizovaná laserová věž (Arduino)
+# TXR-26: Interaktivní Pan-Tilt Věž (Arduino & Python)
 
-Tento repozitář obsahuje zdrojové kódy pro ročníkovou práci **TXR-26 Laserová věž**. Systém je postaven na platformě Arduino Uno, využívá díly vytištěné na 3D tiskárně a je řízen servomotory ve dvou osách (X/Y).
+Tento repozitář obsahuje zdrojové kódy a zkompilovaný software pro ročníkovou práci **TXR-26**. Jde o pohyblivou věž (Pan-Tilt systém) postavenou na platformě Arduino Uno s 3D tištěnými díly. Systém je plně řízen z počítače pomocí interaktivní aplikace napsané v jazyce Python.
 
-## 📂 Soubory a složky
+### 📂 Soubory a složky
 
-* **`Manual_Script`**: Složka obsahující kód pro manuální režim. Umožňuje přesné ovládání věže pomocí joysticku a zahrnuje funkci přepínání (toggle) laseru.
-* **`Idle_Script`**: Složka s kódem pro automatický režim. Věž v tomto módu samostatně skenuje prostor (simulace režimu "Sentry").
+* **`Aplikace/dist/`**: Obsahuje zkompilovanou desktopovou aplikaci `joystick.exe` pro Windows. Tato aplikace tvoří hlavní uživatelské rozhraní a nevyžaduje instalaci jazyka Python.
+* **`Aplikace/`**: Zdrojové kódy Python aplikace (`joystick.py`), které zajišťují čtení kurzoru, vykreslení UI a sériovou komunikaci s Arduinem.
+* **Zdrojový kód pro Arduino**: Univerzální firmware pro Arduino Uno, který přijímá data z PC a ovládá servomotory i laser. (Již není potřeba přeflashovávat desku pro změnu režimů).
 
-## 🛠️ Použitý Hardware
+### 🛠️ Použitý Hardware
 
 * **Řídicí jednotka:** Arduino Uno R3
-* **Pohon:** Servomotory MG995 (Osa X - otáčení) a MG90 (Osa Y - náklon)
-* **Ovládání:** Analogový Joystick KY-023
-* **Napájení:** 4x AA Baterie (pro motory) + USB kabel (pro Arduino)
+* **Pohon:** Servomotory (Osa X pro horizontální otáčení, Osa Y pro vertikální náklon)
+* **Užitečné zatížení (Payload):** Zaměřovací laserový modul (a maketa modulu ESP32-CAM pro demonstraci zapojení)
+* **Napájení:** Externí blok 4× AA baterií (6 V) vyhrazený pro bezpečný chod servomotorů + USB kabel pro napájení a komunikaci Arduina s PC.
 
-## 🚀 Jak kód nahrát
+### 🚀 Jak systém spustit a ovládat
 
-1.  Otevřete požadovaný soubor `.ino` v prostředí Arduino IDE.
-2.  Připojte Arduino Uno k počítači pomocí USB.
-3.  V menu vyberte správnou desku (**Tools -> Board -> Arduino Uno**) a port.
-4.  Klikněte na tlačítko **Upload**.
+Firmware je v mikrokontroléru již nahrán, pro běžný provoz **není potřeba používat Arduino IDE**.
 
----
-*Vypracoval: Ondřej Malík, Třída 4ITA (Školní rok 2025/2026)*
+1. **Zapojení:** Připojte napájení servomotorů (baterie) a propojte Arduino s počítačem pomocí USB kabelu.
+2. **Spuštění:** Ve složce `Aplikace/dist/` spusťte soubor **`joystick.exe`**.
+3. **Ovládání aplikace:**
+   * **Pohyb (Manuální režim):** Věž automaticky a plynule sleduje pohyb vašeho kurzoru myši/touchpadu po obrazovce.
+   * **Laser:** Zapíná a vypíná se stisknutím klávesy **Mezerník (Space)**.
+   * **Změna režimu:** Stisknutím klávesy **Tab** (nebo kliknutím na tlačítko v aplikaci) lze věž přepnout do **Idle režimu (Autopilot)**, ve kterém věž nezávisle na uživateli sama skenuje prostor. Opětovným stiskem se vrátíte do manuálního řízení.
